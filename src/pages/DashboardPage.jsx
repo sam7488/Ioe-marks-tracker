@@ -165,9 +165,13 @@ export default function DashboardPage() {
     localStorage.setItem(`marks_${user.uid}`, JSON.stringify(newMarks));
     localStorage.setItem(`marks_timestamp_${user.uid}`, Date.now().toString());
 
-    // Debounce cloud sync by 2 seconds
+    setSaveMsg('Unsaved changes...');
+
+    // Debounce cloud sync by 1 second
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(async () => {
+      setSaving(true);
+      setSaveMsg('Autosaving...');
       try {
         const batch = writeBatch(db);
         const timestamp = new Date().toISOString();
@@ -176,10 +180,15 @@ export default function DashboardPage() {
           batch.set(docRef, { marks: newMarks[sem], updatedAt: timestamp });
         }
         await batch.commit();
+        setSaveMsg('All changes saved');
+        setTimeout(() => setSaveMsg(''), 2000);
       } catch (err) {
-        // Silently fail for autosave, user can still manually click 'Save All'
+        setSaveMsg('Autosave failed');
+        setTimeout(() => setSaveMsg(''), 3000);
+      } finally {
+        setSaving(false);
       }
-    }, 2000);
+    }, 1000);
   }, [user]);
 
   // Scroll Spy Observer
