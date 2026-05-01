@@ -124,7 +124,7 @@ export default function MarksheetTable({ semester, marks, setMarks }) {
     let numVal = value === '' ? '' : Math.max(0, parseInt(value) || 0);
     if (numVal !== '') {
       const maxAllowed = field === 'asst' ? row.fullMarksAsst : row.fullMarksFinal;
-      if (numVal > maxAllowed) numVal = maxAllowed;
+      if (numVal > maxAllowed) return; // Reject input if greater than full marks
     }
     setMarks((prev) => ({
       ...prev,
@@ -133,6 +133,18 @@ export default function MarksheetTable({ semester, marks, setMarks }) {
         [field]: numVal,
       },
     }));
+  };
+
+  // Prevent arrow keys from incrementing/decrementing
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+    }
+  };
+
+  // Prevent scroll wheel from incrementing/decrementing when focused
+  const handleWheel = (e) => {
+    e.target.blur();
   };
 
   // Compute total for a row
@@ -337,6 +349,8 @@ export default function MarksheetTable({ semester, marks, setMarks }) {
                         max={row.fullMarksAsst}
                         value={m.asst}
                         onChange={(e) => updateMark(row, 'asst', e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        onWheel={handleWheel}
                         className="w-full text-center text-sm py-1 px-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-400"
                         style={{ fontFamily: "'Times New Roman', serif", maxWidth: '60px', margin: '0 auto', display: 'block' }}
                         placeholder="—"
@@ -355,6 +369,8 @@ export default function MarksheetTable({ semester, marks, setMarks }) {
                           max={row.fullMarksFinal}
                           value={m.final}
                           onChange={(e) => updateMark(row, 'final', e.target.value)}
+                          onKeyDown={handleKeyDown}
+                          onWheel={handleWheel}
                           className={`w-full text-center text-sm py-1 px-1 border rounded focus:outline-none focus:ring-1 focus:ring-gray-400 ${showAsterisk ? 'border-red-400 bg-red-50' : 'border-gray-300'
                             }`}
                           style={{ fontFamily: "'Times New Roman', serif", maxWidth: '60px', display: 'block' }}
