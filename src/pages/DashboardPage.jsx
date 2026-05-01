@@ -274,13 +274,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50 flex font-sans">
       <ProfileModal 
         isOpen={showProfileModal} 
-        onClose={() => {
-          if (isFirstTime && (!profile?.name || !profile?.faculty)) {
-            // Can't close if first time and required fields missing
-            return;
-          }
-          setShowProfileModal(false);
-        }} 
+        onClose={() => setShowProfileModal(false)}
         profile={profile}
         setProfile={(p) => {
           setProfile(p);
