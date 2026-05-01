@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { collection, getDocs, doc, getDoc, writeBatch } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, writeBatch, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import semesterData from '../data/semesterData';
 import MarksheetTable from '../components/MarksheetTable';
@@ -119,6 +119,41 @@ export default function DashboardPage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  // Real-time Firestore Sync (Cross-Device/Cross-Tab)
+  useEffect(() => {
+    if (!user) return;
+    
+    const q = collection(db, 'users', user.uid, 'semesters');
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const fetchedMarks = {};
+      let firestoreLatest = 0;
+      
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        fetchedMarks[docSnap.id] = data.marks || {};
+        if (data.updatedAt) {
+          const ts = new Date(data.updatedAt).getTime();
+          if (ts > firestoreLatest) firestoreLatest = ts;
+        }
+      });
+      
+      const localTs = Number(localStorage.getItem(`marks_timestamp_${user.uid}`) || 0);
+      
+      // ONLY overwrite local state if Firestore data is explicitly newer than our local cache!
+      if (firestoreLatest > localTs) {
+        const initialMarks = {};
+        for (let i = 1; i <= 8; i++) {
+          initialMarks[i] = fetchedMarks[i] || {};
+        }
+        setAllMarks(initialMarks);
+        localStorage.setItem(`marks_${user.uid}`, JSON.stringify(initialMarks));
+        localStorage.setItem(`marks_timestamp_${user.uid}`, firestoreLatest.toString());
+      }
+    });
+    
+    return () => unsubscribe();
+  }, [user]);
 
   // Background Autosave Ref
   const debounceTimer = useRef(null);
