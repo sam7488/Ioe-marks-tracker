@@ -685,11 +685,11 @@ const bctData = {
         theoryAsst: 0,
         theoryFinal: 0,
         practicalAsst: 50,
-        practicalFinal: 25,
-        total: 75,
+        practicalFinal: 50,
+        total: 100,
       },
     ],
-    totalMarks: 725,
+    totalMarks: 750,
   },
 };
 
