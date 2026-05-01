@@ -1,16 +1,52 @@
-# React + Vite
+# IOE BCT Marksheet Tracker 🎓
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A professional mark tracking tool for **Computer Engineering (BCT)** students at **IOE, Tribhuvan University**. 
 
-Currently, two official plugins are available:
+**Live Demo:** [https://github.com/sam7488/Ioe-marks-tracker](https://github.com/sam7488/Ioe-marks-tracker)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **✅ Full Curriculum**: Pre-loaded BCT syllabus (Theory/Practical).
+- **☁️ Cloud Sync**: Automatic background syncing via Firebase Firestore.
+- **🚀 0ms Loading**: Optimistic local caching for instant app access.
+- **📊 IOE Aggregate**: Auto-calculates aggregate percentage (10% Sem 1-4, 15% Sem 5-8).
+- **📑 PDF Export**: Single semester or full 8-semester transcript with aggregate.
+- **🔐 Google Auth**: Secure login and profile management.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Quick Setup
+
+1. **Clone & Install**:
+   ```bash
+   git clone https://github.com/sam7488/Ioe-marks-tracker.git
+   cd Ioe-marks-tracker
+   npm install
+   ```
+
+2. **Firebase Config**: Update `src/firebase.js` with your project credentials.
+
+3. **Run**:
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 🛡️ Firestore Rules
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+
+---
+*Developed for IOE BCT Students* 🇳🇵
