@@ -189,29 +189,37 @@ export default function MarksheetTable({ semester, marks, setMarks }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, marks]);
 
-  // Render elective selector dropdown
-  const renderElectiveSelector = (row) => {
-    if (!row.isElective || row.isPracticalRow) return null;
+  // Render elective selector dropdown or code text
+  const renderCodeCell = (row) => {
+    if (!row.isElective || row.isPracticalRow) {
+      return row.code;
+    }
     const subj = row.subj;
     const electiveKey = `${subj.code}_elective`;
     const selected = marks[electiveKey];
     const selectedCode = selected?.code || '';
 
     return (
-      <div className="mt-1">
+      <div className="relative inline-block w-full" style={{ maxWidth: '100px' }}>
         <select
           value={selectedCode}
           onChange={(e) => handleElectiveChange(subj, e.target.value)}
-          className="w-full text-xs py-1 px-1 border border-blue-300 rounded bg-blue-50 focus:outline-none focus:ring-1 focus:ring-blue-400 cursor-pointer"
-          style={{ fontFamily: 'sans-serif', maxWidth: '300px' }}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          title="Select Elective"
         >
-          <option value="">— Select {subj.name} —</option>
+          <option value="">{subj.code} ▾</option>
           {subj.electiveOptions.map((opt) => (
             <option key={opt.code} value={opt.code}>
               {opt.code} — {opt.name}
             </option>
           ))}
         </select>
+        <div className="flex items-center justify-between text-sm font-bold text-gray-900 py-0.5 px-1 border border-transparent hover:border-gray-300 hover:bg-gray-50 rounded cursor-pointer transition-colors">
+          <span className="truncate">{selectedCode || subj.code}</span>
+          <svg className="w-4 h-4 text-gray-500 ml-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
       </div>
     );
   };
@@ -297,13 +305,12 @@ export default function MarksheetTable({ semester, marks, setMarks }) {
               return (
                 <tr key={row.key} className="hover:bg-gray-50 transition-colors">
                   {/* Code */}
-                  <td className="border border-gray-400 px-3 py-2 text-sm font-bold">
-                    {row.code}
+                  <td className="border border-gray-400 px-2 py-1 text-sm font-bold">
+                    {renderCodeCell(row)}
                   </td>
                   {/* Title */}
                   <td className="border border-gray-400 px-3 py-2 text-sm font-bold">
                     {row.title}
-                    {renderElectiveSelector(row)}
                   </td>
                   {/* Full Marks Asst */}
                   <td className="border border-gray-400 px-3 py-2 text-center text-sm">
