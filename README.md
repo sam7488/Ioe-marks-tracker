@@ -2,8 +2,7 @@
 
 A professional mark tracking tool for **Computer Engineering (BCT)** students at **IOE, Tribhuvan University**. 
 
-**Live Demo:** [https://github.com/sam7488/Ioe-marks-tracker](https://github.com/sam7488/Ioe-marks-tracker)
-
+**Live Demo:** [IOE-Marks-Tracker](https://ioe-marks-tracker-hzfhg5to4-sam7488s-projects.vercel.app/)
 ---
 
 ## ✨ Features
