@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, doc, getDoc, writeBatch, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
-import semesterData from '../data/semesterData';
+import semesterDataByFaculty from '../data/semesterData';
 import MarksheetTable from '../components/MarksheetTable';
 import ProfileModal from '../components/ProfileModal';
 import { exportSemesterPDF, exportAllSemestersPDF, computeTotals } from '../utils/pdfExport';
@@ -293,6 +293,7 @@ export default function DashboardPage() {
   };
 
   const computeAggregate = () => {
+    if (!semesterData) return '—';
     let totalWeightedPercent = 0;
     let totalWeightUsed = 0;
     
@@ -312,7 +313,9 @@ export default function DashboardPage() {
     return (totalWeightedPercent / totalWeightUsed).toFixed(2) + '%';
   };
 
-  const currentSemesterData = semesterData[selectedSemester];
+  const userFaculty = profile?.faculty || 'BCT';
+  const semesterData = semesterDataByFaculty[userFaculty];
+  const currentSemesterData = semesterData ? semesterData[selectedSemester] : null;
 
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
@@ -370,7 +373,7 @@ export default function DashboardPage() {
             <button
               key={sem}
               onClick={() => scrollToSemester(sem)}
-              title={semesterData[sem].name}
+              title={semesterData ? semesterData[sem].name : `Semester ${sem}`}
               className={`w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 selectedSemester === sem
                   ? 'bg-gray-900 text-white shadow-sm'
@@ -407,27 +410,29 @@ export default function DashboardPage() {
             </button>
             <div className="hidden sm:block">
               <h2 className="text-lg font-bold text-gray-900" style={{ fontFamily: "'Times New Roman', serif" }}>
-                {currentSemesterData.name}
+                {currentSemesterData ? currentSemesterData.name : 'Data Pending'}
               </h2>
             </div>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
             {/* PDF Exports (Hidden on very small screens) */}
-            <div className="hidden md:flex items-center gap-2 mr-2 border-r pr-4 border-gray-200">
-              <button
-                onClick={() => exportSemesterPDF(currentSemesterData, allMarks[selectedSemester], computeAggregate())}
-                className="text-xs font-medium text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition"
-              >
-                PDF (Current)
-              </button>
-              <button
-                onClick={() => exportAllSemestersPDF(semesterData, allMarks, computeAggregate())}
-                className="text-xs font-medium text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition"
-              >
-                PDF (All)
-              </button>
-            </div>
+            {semesterData && (
+              <div className="hidden md:flex items-center gap-2 mr-2 border-r pr-4 border-gray-200">
+                <button
+                  onClick={() => exportSemesterPDF(currentSemesterData, allMarks[selectedSemester], computeAggregate())}
+                  className="text-xs font-medium text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition"
+                >
+                  PDF (Current)
+                </button>
+                <button
+                  onClick={() => exportAllSemestersPDF(semesterData, allMarks, computeAggregate())}
+                  className="text-xs font-medium text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition"
+                >
+                  PDF (All)
+                </button>
+              </div>
+            )}
 
             {/* Save Status & Button */}
             {saveMsg && (
@@ -507,6 +512,12 @@ export default function DashboardPage() {
           {loadingData ? (
             <div className="flex items-center justify-center h-full">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          ) : !semesterData ? (
+            <div className="flex flex-col items-center justify-center h-full text-center px-4">
+              <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Subject Data Coming Soon</h2>
+              <p className="text-gray-500 max-w-md">We are currently gathering subject and marks data for <strong>{userFaculty}</strong>. Please check back later or contact support to contribute!</p>
             </div>
           ) : (
             <div className="max-w-5xl mx-auto space-y-12 pb-24">

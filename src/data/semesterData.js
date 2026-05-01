@@ -35,7 +35,54 @@ const electiveIIIOptions = [
   { code: 'EX 785 03', name: 'Telecommunication' },
 ];
 
-const semesterData = {
+const bceElectiveIOptions = [
+  { code: 'CE 725 04', name: 'Bio-Engineering' },
+  { code: 'CE 725 12', name: 'Water and WasteWater Quality Analysis' },
+  { code: 'CE 725 06', name: 'Soil Conservation and Watershed Management' },
+  { code: 'CE 725 01', name: 'Structural Dynamics' },
+  { code: 'CE 725 03', name: 'Trail Suspension Bridge' },
+  { code: 'CE 725 02', name: 'Seismic Resistant Design of Masonry Structures' },
+  { code: 'CE 725 11', name: 'Solid Waste Management' },
+  { code: 'CE 725 10', name: 'Ropeway Engineering' },
+  { code: 'CE 725 09', name: 'Transportation Planning and Engineering' },
+  { code: 'CE 725 05', name: 'Rock Engineering' },
+  { code: 'CE 725 13', name: 'Community Development and Participatory Rural Approach' },
+  { code: 'CE 725 07', name: 'Earth Hazard' },
+];
+
+const bceElectiveIIOptions = [
+  { code: 'CE 765 16', name: 'Climate Change' },
+  { code: 'CE 765 17', name: 'Environmental Management System' },
+  { code: 'CE 765 09', name: 'Groundwater Engineering' },
+  { code: 'CE 765 05', name: 'Seismic Risk Assessment' },
+  { code: 'CE 765 18', name: 'Water Quality Management' },
+  { code: 'CE 765 10', name: 'Traffic and Transport Modeling' },
+  { code: 'CE 765 13', name: 'Traffic Engineering and Management' },
+  { code: 'CE 765 14', name: 'Rural Road Engineering' },
+  { code: 'CE 765 07', name: 'Rock Slope Engineering' },
+  { code: 'CE 765 11', name: 'Rock Mechanics' },
+  { code: 'CE 765 20', name: 'Public Health and Risk Assessment' },
+  { code: 'CE 765 04', name: 'Vulnerability Assessment and Retrofitting Techniques' },
+  { code: 'CE 765 02', name: 'Design of Bridges' },
+  { code: 'CE 765 21', name: 'Introduction to Prestressed Concrete Analysis and Design' },
+  { code: 'CE 765 19', name: 'Post Disaster Water and Sanitation Management' },
+  { code: 'CE 765 08', name: 'Hill Irrigation Engineering' },
+  { code: 'CE 765 03', name: 'Geotechnical Earthquake Engineering' },
+  { code: 'CE 765 12', name: 'Advanced Geotechnical Engineering' },
+  { code: 'CE 765 01', name: 'Earthquake Resistant Design of Structures' },
+  { code: 'CE 765 15', name: 'Domestic Water and Waste Water Engineering and Management' },
+];
+
+const bceElectiveIIIOptions = [
+  { code: 'CE 785 02', name: 'Construction Safety Management' },
+  { code: 'CE 785 03', name: 'Procurement Management' },
+  { code: 'CE 785 05', name: 'Time Series Analysis' },
+  { code: 'CE 785 04', name: 'Environmental Impact Assessment (EIA)' },
+  { code: 'CE 785 01', name: 'GIS Application and Remote Sensing' },
+  { code: 'CE 785 06', name: 'Disaster Risk Management' },
+];
+
+const bctData = {
   1: {
     name: 'First Semester',
     subjects: [
@@ -646,4 +693,149 @@ const semesterData = {
   },
 };
 
-export default semesterData;
+const bceData = {
+  1: {
+    name: 'First Semester',
+    subjects: [
+      { code: 'SH401', name: 'Engineering Mathematics I', examType: 'Theory', theoryAsst: 20, theoryFinal: 80, practicalAsst: 0, practicalFinal: 0, total: 100 },
+      { code: 'ME401', name: 'Engineering Drawing I', examType: 'Practical', theoryAsst: 0, theoryFinal: 0, practicalAsst: 60, practicalFinal: 40, total: 100 },
+      { code: 'SH403', name: 'Engineering Chemistry', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 20, practicalFinal: 30, total: 150 },
+      { code: 'ME402', name: 'Fundamental of Thermodynamics & Heat Transfer', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 20, practicalFinal: 0, total: 120 },
+      { code: 'CT401', name: 'Computer Programming', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 50, practicalFinal: 0, total: 150 },
+      { code: 'ME403', name: 'Workshop Technology', examType: 'Practical', theoryAsst: 0, theoryFinal: 0, practicalAsst: 25, practicalFinal: 25, total: 50 },
+    ],
+    totalMarks: 670,
+  },
+  2: {
+    name: 'Second Semester',
+    subjects: [
+      { code: 'CE451', name: 'Applied Mechanics', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'SH451', name: 'Engineering Mathematics II', examType: 'Theory', theoryAsst: 20, theoryFinal: 80, practicalAsst: 0, practicalFinal: 0, total: 100 },
+      { code: 'SH452', name: 'Engineering Physics', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 20, practicalFinal: 30, total: 150 },
+      { code: 'EX451', name: 'Basic Electronics Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'ME451', name: 'Engineering Drawing II', examType: 'Practical', theoryAsst: 0, theoryFinal: 0, practicalAsst: 60, practicalFinal: 40, total: 100 },
+      { code: 'EE451', name: 'Basic Electrical Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 25, total: 150 },
+    ],
+    totalMarks: 750,
+  },
+  3: {
+    name: 'Third Semester',
+    subjects: [
+      { code: 'CE506', name: 'Civil Engineering Materials', examType: 'Both', theoryAsst: 10, theoryFinal: 40, practicalAsst: 25, practicalFinal: 0, total: 75 },
+      { code: 'SH501', name: 'Engineering Mathematics III', examType: 'Theory', theoryAsst: 20, theoryFinal: 80, practicalAsst: 0, practicalFinal: 0, total: 100 },
+      { code: 'CE503', name: 'Applied Mechanics(Dynamics)', examType: 'Both', theoryAsst: 10, theoryFinal: 40, practicalAsst: 25, practicalFinal: 0, total: 75 },
+      { code: 'CE503_G', name: 'Engineering Geology I', examType: 'Both', theoryAsst: 10, theoryFinal: 40, practicalAsst: 25, practicalFinal: 0, total: 75 },
+      { code: 'CE502', name: 'Strength of Materials', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE504', name: 'Surveying I', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 50, practicalFinal: 0, total: 150 },
+      { code: 'CE505', name: 'Fluid Mechanics', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 25, total: 150 },
+    ],
+    totalMarks: 750,
+  },
+  4: {
+    name: 'Fourth Semester',
+    subjects: [
+      { code: 'CE555', name: 'Hydraulics', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 25, total: 150 },
+      { code: 'CE554', name: 'Surveying II', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 50, practicalFinal: 0, total: 150 },
+      { code: 'CE551', name: 'Theory of Structure I', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'SH552', name: 'Probability & Statistics', examType: 'Theory', theoryAsst: 20, theoryFinal: 80, practicalAsst: 0, practicalFinal: 0, total: 100 },
+      { code: 'CE553', name: 'Engineering Geology II', examType: 'Both', theoryAsst: 10, theoryFinal: 40, practicalAsst: 25, practicalFinal: 0, total: 75 },
+      { code: 'CE556', name: 'Building Drawing', examType: 'Practical', theoryAsst: 0, theoryFinal: 0, practicalAsst: 30, practicalFinal: 20, total: 50 },
+      { code: 'CE552', name: 'Soil Mechanics', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 25, total: 150 },
+    ],
+    totalMarks: 800,
+  },
+  5: {
+    name: 'Fifth Semester',
+    subjects: [
+      { code: 'CE601', name: 'Theory of structures II', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE605', name: 'Water Supply Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE606', name: 'Engineering hydrology', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE603', name: 'Concrete Technology and masonry structure', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 25, total: 150 },
+      { code: 'SH603', name: 'Numerical Methods', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE602', name: 'Foundation Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+    ],
+    totalMarks: 775,
+  },
+  6: {
+    name: 'Sixth Semester',
+    subjects: [
+      { code: 'CE651', name: 'Design of Steel and Timber Structure', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'SH651', name: 'Communication English', examType: 'Both', theoryAsst: 10, theoryFinal: 40, practicalAsst: 25, practicalFinal: 25, total: 100 },
+      { code: 'CE655', name: 'Engineering Economics', examType: 'Theory', theoryAsst: 20, theoryFinal: 80, practicalAsst: 0, practicalFinal: 0, total: 100 },
+      { code: 'CE652', name: 'Building Technology', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE656', name: 'Sanitary Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE653', name: 'Transportation Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE654', name: 'Irrigation and Drainage', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE657', name: 'Survey Camp', examType: 'Practical', theoryAsst: 0, theoryFinal: 0, practicalAsst: 50, practicalFinal: 0, total: 50 },
+    ],
+    totalMarks: 875,
+  },
+  7: {
+    name: 'Seventh Semester',
+    subjects: [
+      { code: 'CE704', name: 'Hydropower Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 25, total: 150 },
+      { code: 'CE701', name: 'Project Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE703', name: 'Transportation Engineering II', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE705', name: 'Estimating & Costing', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { 
+        code: 'CE725', 
+        name: 'Elective I', 
+        examType: 'Theory', 
+        theoryAsst: 20, 
+        theoryFinal: 80, 
+        practicalAsst: 0, 
+        practicalFinal: 0, 
+        total: 100,
+        isElective: true,
+        electiveGroup: 'I',
+        electiveOptions: bceElectiveIOptions,
+      },
+      { code: 'CE702', name: 'Design of RCC Structure', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+    ],
+    totalMarks: 750,
+  },
+  8: {
+    name: 'Eighth Semester',
+    subjects: [
+      { code: 'CE751', name: 'Computational Techniques in Civil Engineering', examType: 'Both', theoryAsst: 20, theoryFinal: 80, practicalAsst: 25, practicalFinal: 0, total: 125 },
+      { code: 'CE752', name: 'Engineering Professional Practice', examType: 'Theory', theoryAsst: 10, theoryFinal: 40, practicalAsst: 0, practicalFinal: 0, total: 50 },
+      { code: 'CE753', name: 'Technology Environment and Society', examType: 'Theory', theoryAsst: 10, theoryFinal: 40, practicalAsst: 0, practicalFinal: 0, total: 50 },
+      { code: 'CE754', name: 'Construction Management', examType: 'Theory', theoryAsst: 20, theoryFinal: 80, practicalAsst: 0, practicalFinal: 0, total: 100 },
+      { code: 'CE755', name: 'Project (Part II)', examType: 'Practical', theoryAsst: 0, theoryFinal: 0, practicalAsst: 150, practicalFinal: 100, total: 250 },
+      { 
+        code: 'CE765', 
+        name: 'Elective II', 
+        examType: 'Theory', 
+        theoryAsst: 20, 
+        theoryFinal: 80, 
+        practicalAsst: 0, 
+        practicalFinal: 0, 
+        total: 100,
+        isElective: true,
+        electiveGroup: 'II',
+        electiveOptions: bceElectiveIIOptions,
+      },
+      { 
+        code: 'CE785', 
+        name: 'Elective III', 
+        examType: 'Theory', 
+        theoryAsst: 20, 
+        theoryFinal: 80, 
+        practicalAsst: 0, 
+        practicalFinal: 0, 
+        total: 100,
+        isElective: true,
+        electiveGroup: 'III',
+        electiveOptions: bceElectiveIIIOptions,
+      },
+    ],
+    totalMarks: 775,
+  },
+};
+
+const semesterDataByFaculty = {
+  BCT: bctData,
+  BCE: bceData,
+};
+
+export default semesterDataByFaculty;

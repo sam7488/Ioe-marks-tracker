@@ -47,6 +47,16 @@ export default function ProfileModal({ isOpen, onClose, profile, setProfile, isF
       return;
     }
 
+    // Check if faculty is being changed on an existing profile
+    if (profile && profile.faculty && profile.faculty !== formData.faculty) {
+      const confirmChange = window.confirm(
+        `Warning: You are changing your faculty from ${profile.faculty} to ${formData.faculty}.\n\nThis will change your entire subject dashboard, and marks for subjects that don't exist in the new faculty will no longer be visible.\n\nAre you sure you want to proceed?`
+      );
+      if (!confirmChange) {
+        return;
+      }
+    }
+
     setSaving(true);
     
     // Save to localStorage as backup
@@ -110,14 +120,26 @@ export default function ProfileModal({ isOpen, onClose, profile, setProfile, isF
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Faculty <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
+              <select
                 required
                 value={formData.faculty}
                 onChange={(e) => setFormData({...formData, faculty: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-gray-900 focus:outline-none"
-                placeholder="e.g., BCT, BCE, BEX"
-              />
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-gray-900 focus:outline-none bg-white"
+              >
+                <option value="" disabled>Select Faculty</option>
+                <option value="BCE">Civil Engineering (BCE)</option>
+                <option value="BCT">Computer Engineering (BCT)</option>
+                <option value="BEL">Electrical Engineering (BEL)</option>
+                <option value="BEI">Electronics, Communication & Information Engineering (BEI)</option>
+                <option value="BME">Mechanical Engineering (BME)</option>
+                <option value="B.Arch">Architecture (B.Arch)</option>
+                <option value="BIE">Industrial Engineering (BIE)</option>
+                <option value="BAG">Agriculture Engineering (BAG)</option>
+                <option value="BGE">Geomatics Engineering (BGE)</option>
+                <option value="BAM">Automobile Engineering (BAM)</option>
+                <option value="BAE">Aerospace Engineering (BAE)</option>
+                <option value="BCH">Chemical Engineering (BCH)</option>
+              </select>
             </div>
 
             <div>
