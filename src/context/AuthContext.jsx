@@ -3,7 +3,8 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   sendPasswordResetEmail,
   signOut,
 } from 'firebase/auth';
@@ -24,6 +25,12 @@ export function AuthProvider({ children }) {
       setUser(currentUser);
       setLoading(false);
     });
+
+    // Handle the result of a redirect sign-in
+    getRedirectResult(auth).catch((error) => {
+      console.error("Redirect Sign-in Error:", error);
+    });
+
     return unsubscribe;
   }, []);
 
@@ -36,7 +43,7 @@ export function AuthProvider({ children }) {
   };
 
   const googleSignIn = () => {
-    return signInWithPopup(auth, googleProvider);
+    return signInWithRedirect(auth, googleProvider);
   };
 
   const resetPassword = (email) => {
