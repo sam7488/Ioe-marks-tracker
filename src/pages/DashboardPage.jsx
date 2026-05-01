@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { collection, getDocs, doc, getDoc, writeBatch, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, writeBatch, onSnapshot, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import semesterDataByFaculty from '../data/semesterData';
 import MarksheetTable from '../components/MarksheetTable';
@@ -241,6 +241,26 @@ export default function DashboardPage() {
     });
   };
 
+  // Reset all marks (called when faculty changes)
+  const resetAllMarks = async () => {
+    const emptyMarks = {
+      1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}
+    };
+    setAllMarks(emptyMarks);
+    localStorage.setItem(`marks_${user.uid}`, JSON.stringify(emptyMarks));
+    
+    try {
+      const batch = writeBatch(db);
+      for (let sem = 1; sem <= 8; sem++) {
+        const docRef = doc(db, 'users', user.uid, 'semesters', String(sem));
+        batch.set(docRef, { marks: {}, updatedAt: new Date().toISOString() });
+      }
+      await batch.commit();
+    } catch (err) {
+      console.error('Error resetting marks in Firestore:', err);
+    }
+  };
+
   // Save ALL marks to Firestore
   const handleSave = async () => {
     if (!user) return;
@@ -328,6 +348,7 @@ export default function DashboardPage() {
           setIsFirstTime(false);
         }}
         isFirstTime={isFirstTime}
+        onResetMarks={resetAllMarks}
       />
 
       {/* Mobile sidebar overlay */}
