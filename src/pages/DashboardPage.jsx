@@ -38,9 +38,11 @@ export default function DashboardPage() {
     
     // Optimistic Load: Immediately show cached data so UI is instant
     const localMarks = localStorage.getItem(`marks_${user.uid}`);
+    let hasLocalData = false;
     if (localMarks) {
       try {
         setAllMarks(JSON.parse(localMarks));
+        hasLocalData = true;
       } catch(e) {}
     }
     
@@ -52,12 +54,15 @@ export default function DashboardPage() {
       } catch(e) {}
     }
     
-    // Stop loading spinner instantly!
-    setLoadingData(false);
+    // Stop loading spinner instantly ONLY if we have local data!
+    // Otherwise, wait for cloud fetch so we don't show empty data briefly.
+    if (hasLocalData) {
+      setLoadingData(false);
+    }
 
     try {
       // Create a timeout promise to prevent eternal hanging
-      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Network timeout')), 3000));
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Network timeout')), 5000));
       
       // 1. Load Profile in background
       const profileRef = doc(db, 'users', user.uid, 'profile', 'data');
@@ -105,6 +110,9 @@ export default function DashboardPage() {
     } catch (err) {
       console.error('Background fetch failed:', err);
       // Data is already loaded from localStorage optimistically, so we just log the error.
+    } finally {
+      // Ensure loading spinner is removed after fetch attempts
+      setLoadingData(false);
     }
   }, [user]);
 
@@ -112,31 +120,32 @@ export default function DashboardPage() {
     loadData();
   }, [loadData]);
 
-  // Background Autosave (Local & Cloud)
-  useEffect(() => {
-    if (!user || loadingData) return;
+  // Background Autosave Ref
+  const debounceTimer = useRef(null);
+
+  const triggerAutosave = useCallback((newMarks) => {
+    if (!user) return;
     
     // Always save instantly to local storage
-    localStorage.setItem(`marks_${user.uid}`, JSON.stringify(allMarks));
+    localStorage.setItem(`marks_${user.uid}`, JSON.stringify(newMarks));
     localStorage.setItem(`marks_timestamp_${user.uid}`, Date.now().toString());
 
     // Debounce cloud sync by 2 seconds
-    const timer = setTimeout(async () => {
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(async () => {
       try {
         const batch = writeBatch(db);
         const timestamp = new Date().toISOString();
         for (let sem = 1; sem <= 8; sem++) {
           const docRef = doc(db, 'users', user.uid, 'semesters', String(sem));
-          batch.set(docRef, { marks: allMarks[sem], updatedAt: timestamp });
+          batch.set(docRef, { marks: newMarks[sem], updatedAt: timestamp });
         }
         await batch.commit();
       } catch (err) {
         // Silently fail for autosave, user can still manually click 'Save All'
       }
     }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [allMarks, user, loadingData]);
+  }, [user]);
 
   // Scroll Spy Observer
   useEffect(() => {
@@ -176,10 +185,15 @@ export default function DashboardPage() {
         ? updatedMarksOrFn(currentSemMarks) 
         : updatedMarksOrFn;
       
-      return {
+      const newAllMarks = {
         ...prev,
         [sem]: newSemMarks
       };
+      
+      // Trigger autosave only on explicit user change
+      triggerAutosave(newAllMarks);
+      
+      return newAllMarks;
     });
   };
 
